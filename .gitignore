@@ -1,0 +1,8 @@
+./Results/*
+Documentation/main.out
+Documentation/main.aux
+Documentation/main.log
+Documentation/main.spl
+Documentation/main.synctex.gz
+PostProcessing.asv
+Documentation/main.toc
