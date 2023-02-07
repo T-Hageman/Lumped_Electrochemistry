@@ -407,9 +407,9 @@ classdef ElectrolyteInterface < BaseModel
 			dreact(2,1,2) = obj.k(2,1)*CH              *exp(-obj.k(2,3)*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const);
 			dreact(2,1,1) = obj.k(2,1)*CH *theta*exp(-obj.k(2,3)*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const)*(-obj.k(2,3)*(-1)*obj.F_const/obj.R_const/obj.T_const);
 
-			react(2,2)    = obj.K(2,2)*(1-theta)*p_H2*exp((1-obj.k(2,3))*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const);
-			dreact(2,2,2) = -obj.K(2,2)*p_H2*exp((1-obj.k(2,3))*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const);
-			dreact(2,2,1) = obj.K(2,2)*(1-theta)*p_H2*exp((1-obj.k(2,3))*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const)*((1-obj.k(2,3))*(-1)*obj.F_const/obj.R_const/obj.T_const);
+			react(2,2)    = obj.k(2,2)*(1-theta)*p_H2*exp((1-obj.k(2,3))*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const);
+			dreact(2,2,2) = -obj.k(2,2)*p_H2*exp((1-obj.k(2,3))*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const);
+			dreact(2,2,1) = obj.k(2,2)*(1-theta)*p_H2*exp((1-obj.k(2,3))*(obj.Em-phil-obj.k(2,4))*obj.F_const/obj.R_const/obj.T_const)*((1-obj.k(2,3))*(-1)*obj.F_const/obj.R_const/obj.T_const);
 
 			%Tafel
 			react(3,1)    = obj.k(3,1)*abs(theta)*theta;

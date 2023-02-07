@@ -1,8 +1,12 @@
-% Finite element simulation code accompanying XXX 
+% Finite element simulation code accompanying T. Hageman, E. Martinez-Paneda, 
+% Stabilising Effects of Lumped Integration Schemes for the Simulation of 
+% Metal-Electrolyte Reactions. Journal of The Electrochemical Society (2023), 
+% http://www.doi.org/10.1149/1945-7111/acb971
+%
 % This performs the simulation of a metal domain interacting with an electrolyte, 
 % and demonstrates the beneficial effects of lumped integration. If this
-% code is used, either directly or after modification, please cite XXX in
-% any resulting research. 
+% code is used, either directly or after modification, please cite 
+% http://www.doi.org/10.1149/1945-7111/acb971 in any resulting research. 
 %
 % Usage: Set the parameters for the case being considered within this file,
 % main.m, and run this file. Other functions contained within this code are
@@ -14,9 +18,7 @@
 % can not be guaranteed to be error-free. Before using this code for
 % relevant or critical applications, especially when simulating cases not 
 % directly included, please perform your own verification. The authors are 
-% not repsonsible for any issues arrising from mistakes within this matlab
-% code.
-
+% not repsonsible for any issues arrising from mistakes within this matlab code.
 close all; clear all; clc
 addpath(genpath('./Models'))
 addpath(genpath('./Shapes'))
@@ -24,10 +26,8 @@ addpath(genpath('./Shapes'))
 maxNumCompThreads(8); %Number of cpu cores to use during simulation (code uses parfor parrallellisation, thus can only run on a single node)
 delete(gcp('nocreate'))
 parpool('threads')
-
 %% Input parameters used in sweeps
 	Em = 0;	%metal potential
-
 	fprintf('Starting job:'+string(Em)+'\n');
 
 	k = [1e-4,	1e-10,	0.5,	0;   %reaction constants, [k, k', alpha, E_eq] for	Acidic Volmer
