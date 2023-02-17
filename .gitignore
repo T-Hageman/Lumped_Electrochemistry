@@ -6,3 +6,6 @@ Documentation/main.spl
 Documentation/main.synctex.gz
 PostProcessing.asv
 Documentation/main.toc
+Documentation/main.bbl
+Documentation/main.blg
+Documentation/texput.log

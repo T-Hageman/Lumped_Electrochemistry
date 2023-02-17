@@ -15,6 +15,8 @@
 \usepackage[autostyle]{csquotes}
 \MakeOuterQuote{"}
 
+\bibliographystyle{elsarticle-num}
+
 % slightly altering rules for figure placement to prevent full-page figures
 \usepackage{placeins}
 \renewcommand{\floatpagefraction}{.90}
@@ -45,7 +47,7 @@
 	autogobble=true
 }
 
-\newcommand{\citeMe}{\href{http://www.doi.org/10.1149/1945-7111/acb971}{T. Hageman \& E. Martínez-Pañeda, \textit{Stabilising effects of lumped integration schemes for the simulation of metal-electrolyte reactions}. Journal of The Electrochemical Society (2023)}}
+\newcommand{\citeMe}{\href{http://www.doi.org/10.1149/1945-7111/acb971}{T. Hageman \& E. Martínez-Pañeda, \textit{Stabilising effects of lumped integration schemes for the simulation of metal-electrolyte reactions}. Journal of The Electrochemical Society 170 (2023) 021511} \citep{Hageman2023}}
 
 \begin{document}
 
@@ -60,7 +62,7 @@
 \address{Department of Civil and Environmental Engineering, Imperial College London, London SW7 2AZ, UK}
 
 \begin{abstract}
-Documentation that accompanies the \textit{MATLAB} code lumped electrochemistry. This documentation explains the usage of the implemented finite element framework, and highlight the main files. Special attention is paid to the parts of the code that implement the volume and interface reactions, which are integrated using a lumped integration scheme. 
+Documentation that accompanies the \textit{MATLAB} code \href{https://github.com/T-Hageman/Lumped_Electrochemistry}{lumped electrochemistry, available from \textcolor{blue}{here}}. This documentation explains the usage of the implemented finite element framework, and highlight the main files. Special attention is paid to the parts of the code that implement the volume and interface reactions, which are integrated using a lumped integration scheme. 
 
 If using this module for research or industrial purposes, please cite: \citeMe{}.
 \end{abstract}
@@ -136,7 +138,7 @@ Notably, since the tangential matrix for linear-elasticity is constant, it is as
 with the force vector also being updated based on this locally saved stiffness matrix. 
 
 \subsubsection{HydrogenDiffusion}
-This model implements the hydrogen mass conservation, through the diffusion equation:
+This model implements the hydrogen mass conservation, through the diffusion equation \citep{Oriani1974, Martinez-Paneda2020, Kristensen2020a, Golahmar2021}:
 \begin{equation}
     \dot{C}_L + \bm{\nabla}\cdot\left(-\frac{D_L}{1-C_L/N_L} \bm{\nabla}C_L \right) + \bm{\nabla}\cdot\left(\frac{D_L C_L \overline{V}_H}{RT}\bm{\nabla}\sigma_H\right) = 0
 \end{equation}
@@ -145,11 +147,11 @@ with the interstitial lattice hydrogen concentration $C_L$ indicated within the 
 This model presumes the linear-elastic model is provided within input 1, from which the Young's modulus and Poisson ratio are taken.
 
 \subsubsection{Electrolyte}
-The electrolyte model implements the Nernst-Planck mass balance:
+The electrolyte model implements the Nernst-Planck mass balance \citep{Planck1890}:
 \begin{equation}
     \dot{C}_{\pi}+\bm{\nabla}\cdot\left(-D_\pi \bm{\nabla}C_\pi\right) + \frac{z_\pi F}{RT} \bm{\nabla} \cdot \left(-D_\pi C_\pi \bm{\nabla} \varphi\right) +R_\pi = 0 
 \end{equation}
-for the ionic species and their name within the model file: $\mathrm{H}^+$ ("H"), $\mathrm{OH}^-$ ("OH"), $\mathrm{Na}^+$ ("Na"), $\mathrm{Cl}^-$ ("Cl", using lower case l; upper case L provides the lattice hydrogen concentration), $\mathrm{Fe}^{2+}$ ("Fe"), and $\mathrm{FeOH}^{+}$ ("FeOH"). Additionally, it implements the electro-neutrality condition:
+for the ionic species and their name within the model file: $\mathrm{H}^+$ ("H"), $\mathrm{OH}^-$ ("OH"), $\mathrm{Na}^+$ ("Na"), $\mathrm{Cl}^-$ ("Cl", using lower case l; upper case L provides the lattice hydrogen concentration), $\mathrm{Fe}^{2+}$ ("Fe"), and $\mathrm{FeOH}^{+}$ ("FeOH"). Additionally, it implements the electro-neutrality condition \citep{Sarkar2011, Feldberg2000}:
 \begin{equation}
 	\sum z_\pi C_\pi = 0
 \end{equation}
@@ -177,7 +179,7 @@ For this model, the input properties required are:
 This model employs a lumped integration scheme when the vector "Lumped" contains true. Details for the implementation of this lumped scheme are given in \cref{sec:LumpedScheme}
 
 \subsubsection{ElectrolyteInterface}
-Finally, the electrolyteInterface model implements the metal-electrolyte coupling through the surface reactions:
+Finally, the electrolyteInterface model implements the metal-electrolyte coupling through the surface reactions \citep{Liu2014, Hageman2022}:
 \begin{alignat}{2}
  \text{Volmer (acid):} && \mathrm{H}^+ + \mathrm{M} + \mathrm{e}^- &\xrightleftharpoons[k_{Va}']{k_{Va}} \mathrm{MH}_{ads} \label{react:1} \\
   \text{Heyrovsky (acid):} && \qquad \mathrm{H}^+ + \mathrm{e}^- + \mathrm{MH}_{ads}&\xrightleftharpoons[k_{Ha}']{k_{Ha}} \mathrm{M} + \mathrm{H}_2 \label{react:2} \\
@@ -265,7 +267,7 @@ in which the equilibriate preconditioner greatly decreases the conditioning numb
 
 \section{Specifics: Lumped integration}
 \label{sec:LumpedScheme}
-This section will go into the implementation specifics regarding the lumped integration scheme. Within this scheme, the volume reactions (inside the electrolyte) and surface reactions (at the metal-electrolyte interface) are not integrated using the standard Gauss integration scheme, but instead are implemented using a lumped scheme. In our paper, it has been shown that this enhanced the stability of the scheme, while also suppressing non-physical oscillations. 
+This section will go into the implementation specifics regarding the lumped integration scheme \citep{Schellekens1993, Hageman2019b, Hageman2020a}. Within this scheme, the volume reactions (inside the electrolyte) and surface reactions (at the metal-electrolyte interface) are not integrated using the standard Gauss integration scheme, but instead are implemented using a lumped scheme. In our paper \citep{Hageman2023}, it has been shown that this enhanced the stability of the scheme, while also suppressing non-physical oscillations. 
 
 The lumped integration scheme is performed on a per-element basis. As a first step, the lumped weight vector is constructed within the standard finite element integration loop:
 \lstinputlisting[firstnumber=91,firstline=91,lastline=96,style=mystyle,title=Models/@ElectrolyteInterface/ElectrolyteInterface.m]{../Models/@ElectrolyteInterface/ElectrolyteInterface.m}
@@ -317,5 +319,7 @@ Reaction rates can be visualised through:
 , resulting in \cref{fig:example_rates}. One thing to note is that this plots the reaction rates based on the \textit{integration point} values. As such, small oscillations within these rates are not detrimental for the numerical scheme. The presence of non-physical oscillations can be more directly judges through, for instance, the surface hydrogen coverage, produced by:
 \lstinputlisting[firstnumber=80,firstline=80,lastline=85,style=mystyle]{../PostProcessing.m}
  and shown in \cref{fig:example_coverage}, indicating the state of the surface is oscillation-free.
+
+\bibliography{references}
 
 \end{document}
